@@ -1,0 +1,37 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+# ------- PROJECT 3 ADDITIONS -------
+
+# - Main API -
+
+# Add an individual to Merchant class
+POST    /addmerchant/:uniqueID                                      controllers.HomeController.addMerchant(uniqueID: String)
+
+# Add an individual to Consumer class
+POST    /addconsumer/:uniqueID                                      controllers.HomeController.addConsumer(uniqueID: String)
+
+# Add an individual to Transaction class
+POST    /addtransaction/:senderID/:receiverID/:transactionID        controllers.HomeController.addTransaction(senderID: String, receiverID: String, transactionID: String)
+
+# Return whether a transaction is commercial
+GET     /iscommercial/:transactionID                                controllers.HomeController.isCommercial(transactionID: String)
+
+# Return whether a transaction is personal
+GET     /ispersonal/:transactionID                                  controllers.HomeController.isPersonal(transactionID: String)
+
+# Return whether a transaction is a purchase transaction
+GET     /ispurchase/:transactionID                                  controllers.HomeController.isPurchase(transactionID: String)
+
+# Return whether a transaction is a refund transaction
+GET     /isrefund/:transactionID                                    controllers.HomeController.isRefund(transactionID: String)
+
+# Return whether a merchant is trusted (return an error if the ID is not a merchant)
+GET     /istrusted/:merchantID                                      controllers.HomeController.isTrusted(merchantID: String)
+
+# This should reload the ontology (or delete all added individuals), so that I can start the testing afresh
+POST    /reset                                                      controllers.HomeController.reset
