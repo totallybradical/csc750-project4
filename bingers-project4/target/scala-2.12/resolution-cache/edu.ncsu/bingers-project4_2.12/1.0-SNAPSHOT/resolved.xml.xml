@@ -4,7 +4,7 @@
 		module="bingers-project4_2.12"
 		revision="1.0-SNAPSHOT"
 		status="integration"
-		publication="20181031183059"
+		publication="20181031201554"
 	>
 		<description>
 		bingers-project4
@@ -52,5 +52,7 @@
 		<dependency org="com.typesafe.play" name="play-guice_2.12" rev="2.6.19" conf="compile->default(compile)"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.8.7" conf="compile->default(compile)"/>
 		<dependency org="com.github.galigator.openllet" name="openllet-jena" rev="2.6.4" conf="compile->default(compile)"/>
+		<dependency org="org.drools" name="drools-core" rev="7.3.0.Final" conf="compile->default(compile)"/>
+		<dependency org="org.drools" name="drools-compiler" rev="7.3.0.Final" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

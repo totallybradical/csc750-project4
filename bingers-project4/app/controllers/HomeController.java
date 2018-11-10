@@ -3,10 +3,13 @@ package controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
+import models.Bank;
+import models.TransactionRequest;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import play.data.FormFactory;
 import play.libs.Json;
 import play.mvc.*;
+import plugins.Drools;
 
 import openllet.jena.PelletReasonerFactory;
 
@@ -18,12 +21,19 @@ import org.apache.jena.reasoner.*;
 import org.apache.jena.shared.JenaException;
 
 import java.io.InputStream;
+import java.util.HashMap;
 
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
 public class HomeController extends Controller {
+
+    @Inject
+    Drools drools;
+
+    private HashMap<String, Bank> banks;
+    private HashMap<String, TransactionRequest> transactionRequests;
 
     private OntModel ontReasoned;
     private String NS;
@@ -84,7 +94,10 @@ public class HomeController extends Controller {
      * Constructor
      */
     public HomeController() {
+
         loadOntology(); // Load the ontology
+        banks = new HashMap<>();
+        transactionRequests = new HashMap<>();
     }
 
     /**
@@ -104,7 +117,7 @@ public class HomeController extends Controller {
 
         // Return appropriate JSON response
         ObjectNode result = Json.newObject();
-        result.put("result", "success");
+        result.put("status", "success");
         return ok(result);
     }
 
@@ -121,105 +134,214 @@ public class HomeController extends Controller {
 
         // Return appropriate JSON response
         ObjectNode result = Json.newObject();
-        result.put("result", "success");
+        result.put("status", "success");
         return ok(result);
     }
 
-    // Add an individual to Transaction class
-    public Result addTransaction(String senderID, String receiverID, String transactionID) {
-        // First, get the classes we need
-        OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
+    // Nationality will be one of “local” or “international”, in lowercase. ID will be unique.
+    public Result addBank(String nationality, String uniqueID) {
+        Bank b = new Bank(uniqueID, nationality);
+        banks.put(uniqueID, b);
 
-        // Get the properties we need
-        OntProperty hasSender = ontReasoned.getObjectProperty(NS + "hasSender");
-        OntProperty hasReceiver = ontReasoned.getObjectProperty(NS + "hasReceiver");
+        drools.kieSession.insert(b);
+//        drools.kieSession.fireAllRules();
 
-        // Get existing individuals
-        Individual sender = ontReasoned.getIndividual( NS + senderID);
-        Individual receiver = ontReasoned.getIndividual(NS + receiverID);
-
-        // Create the individuals we need
-        Individual transaction = ontReasoned.createIndividual(NS + transactionID, classTransaction);
-
-        // Add the properties
-        transaction.addProperty(hasSender, sender);
-        transaction.addProperty(hasReceiver, receiver);
-
-        // Print ontology
-        printOntology();
+        System.out.println("Banks: " + banks);
+        System.out.println();
 
         // Return appropriate JSON response
         ObjectNode result = Json.newObject();
-        result.put("result", "success");
+        result.put("status", "success");
+        return ok(result);
+    }
+
+//    P4 - REPLACED BY TRANSACTION REQUEST
+//    // Add an individual to Transaction class
+//    public Result addTransaction(String senderID, String receiverID, String transactionID) {
+//        // First, get the classes we need
+//        OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
+//
+//        // Get the properties we need
+//        OntProperty hasSender = ontReasoned.getObjectProperty(NS + "hasSender");
+//        OntProperty hasReceiver = ontReasoned.getObjectProperty(NS + "hasReceiver");
+//
+//        // Get existing individuals
+//        Individual sender = ontReasoned.getIndividual( NS + senderID);
+//        Individual receiver = ontReasoned.getIndividual(NS + receiverID);
+//
+//        // Create the individuals we need
+//        Individual transaction = ontReasoned.createIndividual(NS + transactionID, classTransaction);
+//
+//        // Add the properties
+//        transaction.addProperty(hasSender, sender);
+//        transaction.addProperty(hasReceiver, receiver);
+//
+//        // Print ontology
+//        printOntology();
+//
+//        // Return appropriate JSON response
+//        ObjectNode result = Json.newObject();
+//        result.put("result", "success");
+//        return ok(result);
+//    }
+
+    public Result addTransactionRequest(String senderID, String receiverID, String bankID, String category, int amount, String transactionRequestID) {
+        TransactionRequest t = new TransactionRequest(senderID, receiverID, bankID, category, amount, transactionRequestID);
+        transactionRequests.put(transactionRequestID, t);
+
+        drools.kieSession.insert(t);
+        drools.kieSession.fireAllRules();
+
+        System.out.println("Transaction Requests: " + transactionRequests);
+        System.out.println();
+
+        if (t.isApproved()) {
+            //  First, get the classes we need
+            OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
+
+            // Get the properties we need
+            OntProperty hasSender = ontReasoned.getObjectProperty(NS + "hasSender");
+            OntProperty hasReceiver = ontReasoned.getObjectProperty(NS + "hasReceiver");
+
+            // Get existing individuals
+            Individual sender = ontReasoned.getIndividual( NS + senderID);
+            Individual receiver = ontReasoned.getIndividual(NS + receiverID);
+
+            // Create the individuals we need
+            Individual transaction = ontReasoned.createIndividual(NS + transactionRequestID, classTransaction);
+
+            // Add the properties
+            transaction.addProperty(hasSender, sender);
+            transaction.addProperty(hasReceiver, receiver);
+
+            // Print ontology
+            printOntology();
+        }
+
+        // Return appropriate JSON response
+        ObjectNode result = Json.newObject();
+        result.put("status", "success");
         return ok(result);
     }
 
     // Return whether a transaction is commercial
     public Result isCommercial(String transactionID) {
         // First, get the classes we need
+        OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
         OntClass classCommercial = ontReasoned.getOntClass(NS + "Commercial");
 
         // Get existing individuals
         Individual transaction = ontReasoned.getIndividual( NS + transactionID);
 
-        // Check if transaction is commercial
-        boolean isCommercial = transaction.hasOntClass(classCommercial);
+        // Check if ID is a transaction
+        boolean isTransaction = transaction.hasOntClass(classTransaction);
 
-        // Return appropriate JSON response
-        ObjectNode result = Json.newObject();
-        result.put("result", String.valueOf(isCommercial));
-        return ok(result);
+        if (isTransaction) {
+            // Check if transaction is commercial
+            boolean isCommercial = transaction.hasOntClass(classCommercial);
+
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "success");
+            result.put("result", String.valueOf(isCommercial));
+            return ok(result);
+        } else {
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "failure");
+            result.put("reason", "not a transaction");
+            return ok(result);
+        }
     }
 
     // Return whether a transaction is personal
     public Result isPersonal(String transactionID) {
         // First, get the classes we need
+        OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
         OntClass classPersonal = ontReasoned.getOntClass(NS + "Personal");
 
         // Get existing individuals
         Individual transaction = ontReasoned.getIndividual( NS + transactionID);
 
-        // Check if transaction is personal
-        boolean isPersonal = transaction.hasOntClass(classPersonal);
+        // Check if ID is a transaction
+        boolean isTransaction = transaction.hasOntClass(classTransaction);
 
-        // Return appropriate JSON response
-        ObjectNode result = Json.newObject();
-        result.put("result", String.valueOf(isPersonal));
-        return ok(result);
+        if (isTransaction) {
+            // Check if transaction is personal
+            boolean isPersonal = transaction.hasOntClass(classPersonal);
+
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "success");
+            result.put("result", String.valueOf(isPersonal));
+            return ok(result);
+        } else {
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "failure");
+            result.put("reason", "not a transaction");
+            return ok(result);
+        }
     }
 
     // Return whether a transaction is a purchase transaction
     public Result isPurchase(String transactionID) {
         // First, get the classes we need
+        OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
         OntClass classPurchase = ontReasoned.getOntClass(NS + "Purchase");
 
         // Get existing individuals
         Individual transaction = ontReasoned.getIndividual( NS + transactionID);
 
-        // Check if transaction is personal
-        boolean isPurchase = transaction.hasOntClass(classPurchase);
+        // Check if ID is a transaction
+        boolean isTransaction = transaction.hasOntClass(classTransaction);
 
-        // Return appropriate JSON response
-        ObjectNode result = Json.newObject();
-        result.put("result", String.valueOf(isPurchase));
-        return ok(result);
+        if (isTransaction) {
+            // Check if transaction is a purchase
+            boolean isPurchase = transaction.hasOntClass(classPurchase);
+
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "success");
+            result.put("result", String.valueOf(isPurchase));
+            return ok(result);
+        } else {
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "failure");
+            result.put("reason", "not a transaction");
+            return ok(result);
+        }
     }
 
     // Return whether a transaction is a refund transaction
     public Result isRefund(String transactionID) {
         // First, get the classes we need
+        OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
         OntClass classRefund = ontReasoned.getOntClass(NS + "Refund");
 
         // Get existing individuals
         Individual transaction = ontReasoned.getIndividual( NS + transactionID);
 
-        // Check if transaction is personal
-        boolean isRefund = transaction.hasOntClass(classRefund);
+        // Check if ID is a transaction
+        boolean isTransaction = transaction.hasOntClass(classTransaction);
 
-        // Return appropriate JSON response
-        ObjectNode result = Json.newObject();
-        result.put("result", String.valueOf(isRefund));
-        return ok(result);
+        if (isTransaction) {
+            // Check if transaction is a refund
+            boolean isRefund = transaction.hasOntClass(classRefund);
+
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "success");
+            result.put("result", String.valueOf(isRefund));
+            return ok(result);
+        } else {
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "failure");
+            result.put("reason", "not a transaction");
+            return ok(result);
+        }
     }
 
     // Return whether a merchant is trusted (return an error if the ID is not a merchant)
@@ -231,19 +353,69 @@ public class HomeController extends Controller {
         // Get existing individuals
         Individual merchant = ontReasoned.getIndividual( NS + merchantID);
 
-        // Check if ID belongs to a merchant
-        if (merchant.hasOntClass(classMerchant)) {
+        // Check if ID is a merchant
+        boolean isMerchant = merchant.hasOntClass(classMerchant);
+
+        if (isMerchant) {
             // Check if merchant is trusted
             boolean isTrusted = merchant.hasOntClass(classTrusted);
 
             // Return appropriate JSON response
             ObjectNode result = Json.newObject();
+            result.put("status", "success");
             result.put("result", String.valueOf(isTrusted));
             return ok(result);
         } else {
             // Return appropriate JSON response
             ObjectNode result = Json.newObject();
-            result.put("error", "not a merchant");
+            result.put("status", "failure");
+            result.put("reason", "not a merchant");
+            return ok(result);
+        }
+    }
+
+    // Returns whether a bank is blacklisted
+    public Result isBlacklisted(String bankID) {
+        // Check if ID is a bank
+        boolean isBank = banks.containsKey(bankID);
+
+        if (isBank) {
+            // Check if bank is blacklisted
+            boolean isBlacklisted = banks.get(bankID).isBlacklisted();
+
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "success");
+            result.put("result", String.valueOf(isBlacklisted));
+            return ok(result);
+        } else {
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "failure");
+            result.put("reason", "not a bank");
+            return ok(result);
+        }
+    }
+
+    // Returns the number of rejections suffered by a bank
+    public Result getRejections(String bankID) {
+        // Check if ID is a bank
+        boolean isBank = banks.containsKey(bankID);
+
+        if (isBank) {
+            // Get number of rejections
+            int numOfRejections = banks.get(bankID).getNumOfRejections();
+
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "success");
+            result.put("rejections", String.valueOf(numOfRejections));
+            return ok(result);
+        } else {
+            // Return appropriate JSON response
+            ObjectNode result = Json.newObject();
+            result.put("status", "failure");
+            result.put("reason", "not a bank");
             return ok(result);
         }
     }
@@ -252,6 +424,15 @@ public class HomeController extends Controller {
     public Result reset() {
         // Reload ontology
         loadOntology();
+
+        // Purge banks
+        banks.clear();
+
+        // Purge transactionRequests
+        transactionRequests.clear();
+
+        // Purge droolsSession
+        drools.kieSession.dispose();
 
         // Print ontology
         printOntology();

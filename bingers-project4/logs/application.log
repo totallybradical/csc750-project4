@@ -1,0 +1,80 @@
+2018-11-10 17:54:46,254 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-8 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 17:54:46,254 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-8 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 17:54:46,254 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-8 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 17:54:46,254 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-8 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 17:54:46,921 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-8 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 17:54:46,976 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-8 - Application started (Dev)
+2018-11-10 17:55:45,066 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-6 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 17:55:45,066 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-6 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 17:55:45,067 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-6 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 17:55:45,067 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-6 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 17:55:45,146 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-6 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 17:55:45,153 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-6 - Application started (Dev)
+2018-11-10 17:58:22,036 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-4 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 17:58:22,036 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-4 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 17:58:22,036 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-4 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 17:58:22,036 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-4 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 17:58:22,137 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-4 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 17:58:22,143 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-4 - Application started (Dev)
+2018-11-10 18:03:10,746 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:03:10,746 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 18:03:10,746 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:03:10,746 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 18:03:10,817 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-12 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 18:03:10,822 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-12 - Application started (Dev)
+2018-11-10 18:04:34,789 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:04:34,790 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 18:04:34,790 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:04:34,790 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 18:04:34,854 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-12 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 18:04:34,859 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-12 - Application started (Dev)
+2018-11-10 18:06:45,553 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:06:45,553 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 18:06:45,553 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:06:45,553 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-12 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 18:06:45,608 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-12 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 18:06:45,612 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-12 - Application started (Dev)
+2018-11-10 18:08:48,259 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-11 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:08:48,259 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-11 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 18:08:48,259 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-11 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:08:48,259 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-11 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 18:08:48,341 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-11 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 18:08:48,346 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-11 - Application started (Dev)
+2018-11-10 18:12:36,672 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-2 - Unable to find pom.properties in /Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:12:36,673 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-2 - As folder project tried to fall back to pom.xml, but could not find one
+2018-11-10 18:12:36,673 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-2 - Unable to load pom.properties from/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes
+2018-11-10 18:12:36,673 [WARN] from org.drools.compiler.kie.builder.impl.ClasspathKieProject in play-dev-mode-akka.actor.default-dispatcher-2 - Cannot find maven pom properties for this project. Using the container's default ReleaseId
+2018-11-10 18:12:36,740 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-2 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+
+2018-11-10 18:12:36,744 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-2 - Application started (Dev)

@@ -1,0 +1,77 @@
+package drools
+
+import models.Bank;
+import models.TransactionRequest;
+
+// A bank, once blacklisted, can no longer process any transactions
+rule "1"
+      dialect "mvel"
+  when
+      $b : Bank($b.isBlacklisted() == true)
+      $t : TransactionRequest($t.getBankID() == $b.getId())
+  then
+      System.out.println("Transaction " + $t.getId() + " uses blacklisted bank " + $t.getBankID());
+      $t.setApproved(false);
+end
+
+
+//rule "2"
+//      dialect "mvel"
+//  when
+//      $t : TransactionRequest()
+//      $b : Bank( $b.isBlacklisted() == false )
+//  then
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//      $b.setBlacklisted(true);
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//end
+//
+//rule "3"
+//      dialect "mvel"
+//  when
+//      $b : Bank( $b.isBlacklisted() == false )
+//  then
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//      $b.setBlacklisted(true);
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//end
+//
+//rule "4"
+//      dialect "mvel"
+//  when
+//      $b : Bank( $b.isBlacklisted() == false )
+//  then
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//      $b.setBlacklisted(true);
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//end
+//
+//rule "5"
+//      dialect "mvel"
+//  when
+//      $b : Bank( $b.isBlacklisted() == false )
+//  then
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//      $b.setBlacklisted(true);
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//end
+//
+//rule "6"
+//      dialect "mvel"
+//  when
+//      $b : Bank( $b.isBlacklisted() == false )
+//  then
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//      $b.setBlacklisted(true);
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//end
+//
+//rule "7"
+//      dialect "mvel"
+//  when
+//      $b : Bank( $b.isBlacklisted() == false )
+//  then
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//      $b.setBlacklisted(true);
+//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+//end
