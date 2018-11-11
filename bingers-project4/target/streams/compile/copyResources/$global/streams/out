@@ -1,7 +1,6 @@
 [0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
 [0m[[0m[0mdebug[0m] [0m[0m	(/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/logback.xml,/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes/logback.xml)[0m
 [0m[[0m[0mdebug[0m] [0m[0m	(/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/drools,/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes/drools)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/drools/HelloWorld.drl,/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes/drools/HelloWorld.drl)[0m
 [0m[[0m[0mdebug[0m] [0m[0m	(/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/drools/Project4Rules.drl,/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes/drools/Project4Rules.drl)[0m
 [0m[[0m[0mdebug[0m] [0m[0m	(/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/META-INF,/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes/META-INF)[0m
 [0m[[0m[0mdebug[0m] [0m[0m	(/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/META-INF/kmodule.xml,/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/target/scala-2.12/classes/META-INF/kmodule.xml)[0m

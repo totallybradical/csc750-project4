@@ -1,13 +1,8 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/routes:30:1: not found: type int[0m
-[0m[[0m[31merror[0m] [0m[0mPOST    /transactionrequest/:senderID/:receiverID/:bankID/:category/:amount/:transactionRequestID           controllers.HomeController.addTransactionRequest(senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String)[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/routes:30:1: not found: type int[0m
-[0m[[0m[31merror[0m] [0m[0mPOST    /transactionrequest/:senderID/:receiverID/:bankID/:category/:amount/:transactionRequestID           controllers.HomeController.addTransactionRequest(senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String)[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/routes:30:1: not found: type int[0m
-[0m[[0m[31merror[0m] [0m[0mPOST    /transactionrequest/:senderID/:receiverID/:bankID/:category/:amount/:transactionRequestID           controllers.HomeController.addTransactionRequest(senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String)[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/routes:30:1: not found: type int[0m
-[0m[[0m[31merror[0m] [0m[0mPOST    /transactionrequest/:senderID/:receiverID/:bankID/:category/:amount/:transactionRequestID           controllers.HomeController.addTransactionRequest(senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String)[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/routes:30:1: not found: type int[0m
-[0m[[0m[31merror[0m] [0m[0mPOST    /transactionrequest/:senderID/:receiverID/:bankID/:category/:amount/:transactionRequestID           controllers.HomeController.addTransactionRequest(senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String)[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/conf/routes:30:1: not found: type int[0m
-[0m[[0m[31merror[0m] [0m[0mPOST    /transactionrequest/:senderID/:receiverID/:bankID/:category/:amount/:transactionRequestID           controllers.HomeController.addTransactionRequest(senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String)[0m
-[0m[[0m[31merror[0m] [0m[0m6 errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:146:1: package drools does not exist[0m
+[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.insert(b);[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:192:1: package drools does not exist[0m
+[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.insert(t);[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:193:1: package drools does not exist[0m
+[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.fireAllRules();[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:435:1: package drools does not exist[0m
+[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.dispose();[0m

@@ -2,76 +2,89 @@ package drools
 
 import models.Bank;
 import models.TransactionRequest;
+import org.apache.jena.ontology.*;
+
+global String NS;
 
 // A bank, once blacklisted, can no longer process any transactions
 rule "1"
-      dialect "mvel"
-  when
-      $b : Bank($b.isBlacklisted() == true)
-      $t : TransactionRequest($t.getBankID() == $b.getId())
-  then
-      System.out.println("Transaction " + $t.getId() + " uses blacklisted bank " + $t.getBankID());
-      $t.setApproved(false);
+dialect "mvel"
+salience -1
+activation-group "Transaction validation"
+when
+    $b : Bank($b.isBlacklisted() == true)
+    $t : TransactionRequest($t.getBankID() == $b.getId())
+then
+    System.out.println("Transaction " + $t.getId() + " uses blacklisted bank " + $t.getBankID() + " - rejected");
+    $b.setNumOfRejections($b.getNumOfRejections() + 1);
+    System.out.println("Bank " + $b.getId() + " has " + $b.getNumOfRejections() + " consecutive rejections");
+    update( $b )
+    $t.setApproved(false);
 end
 
+// A transaction request belonging to the category of “Medical”, must go through,
+// regardless of what the following rules evaluate to (unless the bank is blacklisted)
+rule "2"
+dialect "mvel"
+salience -2
+activation-group "Transaction validation"
+when
+    $t : TransactionRequest($t.getCategory() == "Medical")
+then
+    System.out.println("Transaction " + $t.getId() + " is of category Medical - approved");
+end
 
-//rule "2"
-//      dialect "mvel"
-//  when
-//      $t : TransactionRequest()
-//      $b : Bank( $b.isBlacklisted() == false )
-//  then
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//      $b.setBlacklisted(true);
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
+// A transaction request with category “Weapons” requires that (necessary, but not
+// sufficient conditions):
+// a. Both the sender and the receiver be trusted (note that only merchants can be
+// trusted, but you just need to check for membership in the class Trusted in your
+// ontology)
+// b. The bank must be local
+rule "3a"
+dialect "mvel"
+salience -3
+activation-group "Transaction validation"
+when
+    $b : Bank($b.getNationality() != "local")
+    $t : TransactionRequest($t.getCategory() == "Weapons" && $t.getBankID() == $b.getId())
+then
+    System.out.println("Transaction " + $t.getId() + " is of category Weapons and is using non-local bank " + $t.getBankID() + " - rejected");
+    $b.setNumOfRejections($b.getNumOfRejections() + 1);
+    System.out.println("Bank " + $b.getId() + " has " + $b.getNumOfRejections() + " consecutive rejections");
+    update( $b )
+    $t.setApproved(false);
+end
+
+//// A transaction request with category “Weapons” requires that (necessary, but not
+//// sufficient conditions):
+//// a. Both the sender and the receiver be trusted (note that only merchants can be
+//// trusted, but you just need to check for membership in the class Trusted in your
+//// ontology)
+//// b. The bank must be local
+//rule "3b"
+//dialect "mvel"
+//salience -3
+//activation-group "Transaction validation"
+//when
+//    $t : TransactionRequest($t.getCategory() == "Weapons")
+//    $o : OntModel()
+//    $sender : Individual($o.getIndividual(NS + $t.getSenderID()))
+//    $receiver : Individual($o.getIndividual(NS + $t.getReceiverID()))
+//    not ($sender.hasOntClass($o.getOntClass(NS + "Trusted")) && $receiver.hasOntClass($o.getOntClass(NS + "Trusted")))
+//then
+//    System.out.println("Transaction " + $t.getId() + " is of category Weapons and is has a non-trusted participant - rejected");
+//    $t.setApproved(false);
 //end
-//
-//rule "3"
-//      dialect "mvel"
-//  when
-//      $b : Bank( $b.isBlacklisted() == false )
-//  then
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//      $b.setBlacklisted(true);
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//end
-//
-//rule "4"
-//      dialect "mvel"
-//  when
-//      $b : Bank( $b.isBlacklisted() == false )
-//  then
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//      $b.setBlacklisted(true);
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//end
-//
-//rule "5"
-//      dialect "mvel"
-//  when
-//      $b : Bank( $b.isBlacklisted() == false )
-//  then
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//      $b.setBlacklisted(true);
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//end
-//
-//rule "6"
-//      dialect "mvel"
-//  when
-//      $b : Bank( $b.isBlacklisted() == false )
-//  then
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//      $b.setBlacklisted(true);
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//end
-//
-//rule "7"
-//      dialect "mvel"
-//  when
-//      $b : Bank( $b.isBlacklisted() == false )
-//  then
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//      $b.setBlacklisted(true);
-//      System.out.println( "Bank " + $b.getId() + " blacklist status: " + $b.isBlacklisted() );
-//end
+
+// A transaction request belonging to the category of “Medical”, must go through,
+// regardless of what the following rules evaluate to (unless the bank is blacklisted)
+rule "7"
+dialect "mvel"
+salience -7
+activation-group "Blacklisting"
+when
+    $b : Bank($b.getNumOfRejections() >= 3 && $b.isBlacklisted() == false)
+then
+    System.out.println("Bank " + $b.getId() + " has reached " + $b.getNumOfRejections() + " consecutive rejections - blacklisted");
+    $b.setBlacklisted(true);
+end

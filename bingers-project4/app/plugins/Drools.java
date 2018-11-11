@@ -25,8 +25,8 @@ public class Drools {
         kieSession = kc.newKieSession("Project4KS");
 
         // uncomment these to enable debugging
-        //kieSession.addEventListener(new DebugAgendaEventListener());
-        //kieSession.addEventListener(new DebugRuleRuntimeEventListener());
+//        kieSession.addEventListener(new DebugAgendaEventListener());
+//        kieSession.addEventListener(new DebugRuleRuntimeEventListener());
 
         lifecycle.addStopHook(() -> {
             kieSession.destroy();

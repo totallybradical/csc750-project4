@@ -96,6 +96,8 @@ public class HomeController extends Controller {
     public HomeController() {
 
         loadOntology(); // Load the ontology
+//        drools.kieSession.insert(this.ontReasoned);
+//        drools.kieSession.setGlobal("NS", this.NS);
         banks = new HashMap<>();
         transactionRequests = new HashMap<>();
     }
