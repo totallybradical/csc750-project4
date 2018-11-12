@@ -1,0 +1,2 @@
+BEGIN REJECTED LOG:
+Transaction ID - transaction2, Bank ID - localbank1, Sender ID - consumer1, Receiver ID - merchant1, Amount - 2000, Category - Dining, Timestamp - 2018-11-11_23:20:19, Rule Broken - 5

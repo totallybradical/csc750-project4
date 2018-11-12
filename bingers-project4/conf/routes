@@ -66,8 +66,8 @@ POST    /reset                                                                  
 
 #       P4 - ADDITION
 # Refer to the logging section
-# GET     /rejectionlog                                                                                       controllers.HomeController.getRejectionLog()
+GET     /rejectionlog                                                                                       controllers.HomeController.getRejectionLog()
 
 #       P4 - ADDITION
 # Refer to the logging section
-# GET     /acceptancelog                                                                                      controllers.HomeController.getAcceptanceLog()
+GET     /acceptancelog                                                                                      controllers.HomeController.getAcceptanceLog()

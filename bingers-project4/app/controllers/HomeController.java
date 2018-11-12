@@ -21,10 +21,7 @@ import org.apache.jena.util.FileManager;
 import org.apache.jena.reasoner.*;
 import org.apache.jena.shared.JenaException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -95,11 +92,11 @@ public class HomeController extends Controller {
     }
 
     public void createLogs() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("./logs/approvedLog.txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./logs/acceptanceLog.txt"));
         writer.write("BEGIN ACCEPTED LOG:");
         writer.newLine();
         writer.close();
-        BufferedWriter writer2 = new BufferedWriter(new FileWriter("./logs/rejectedLog.txt"));
+        BufferedWriter writer2 = new BufferedWriter(new FileWriter("./logs/rejectionLog.txt"));
         writer2.write("BEGIN REJECTED LOG:");
         writer2.newLine();
         writer2.close();
@@ -271,7 +268,7 @@ public class HomeController extends Controller {
                     ", Category - " + t.getCategory() +
                     ", Timestamp - " + t.getTimestamp();
             try {
-                appendToLog("approved", logEntry);
+                appendToLog("acceptance", logEntry);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -286,7 +283,7 @@ public class HomeController extends Controller {
                     ", Timestamp - " + t.getTimestamp() +
                     ", Rule Broken - " + t.getBrokenRule();
             try {
-                appendToLog("rejected", logEntry);
+                appendToLog("rejection", logEntry);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -528,5 +525,49 @@ public class HomeController extends Controller {
         ObjectNode result = Json.newObject();
         result.put("result", "success");
         return ok(result);
+    }
+
+    public Result getRejectionLog() {
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader("./logs/rejectionLog.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        StringBuffer logContents = new StringBuffer();
+        String line = null;
+
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+
+                logContents.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ok(logContents.toString());
+    }
+
+    public Result getAcceptanceLog() {
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader("./logs/acceptanceLog.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        StringBuffer logContents = new StringBuffer();
+        String line = null;
+
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+
+                logContents.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ok(logContents.toString());
     }
 }
