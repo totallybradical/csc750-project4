@@ -21,6 +21,9 @@ import org.apache.jena.util.FileManager;
 import org.apache.jena.reasoner.*;
 import org.apache.jena.shared.JenaException;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
@@ -91,16 +94,36 @@ public class HomeController extends Controller {
         System.out.println();
     }
 
+    public void createLogs() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./logs/approvedLog.txt"));
+        writer.write("BEGIN ACCEPTED LOG:");
+        writer.newLine();
+        writer.close();
+        BufferedWriter writer2 = new BufferedWriter(new FileWriter("./logs/rejectedLog.txt"));
+        writer2.write("BEGIN REJECTED LOG:");
+        writer2.newLine();
+        writer2.close();
+    }
+
+    public void appendToLog(String whichLog, String logEntry) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./logs/" + whichLog + "Log.txt", true));
+        writer.append(logEntry);
+        writer.newLine();
+        writer.close();
+    }
+
     /**
      * Constructor
      */
     public HomeController() {
-
         loadOntology(); // Load the ontology
-//        drools.kieSession.insert(this.ontReasoned);
-//        drools.kieSession.setGlobal("NS", this.NS);
         banks = new HashMap<>();
         transactionRequests = new HashMap<>();
+        try {
+            createLogs();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -202,9 +225,13 @@ public class HomeController extends Controller {
         System.out.println("Transaction Requests: " + transactionRequests);
         System.out.println();
 
-        drools.kieSession.update(tFactHandle, t);
+        Bank b = banks.get(t.getBankID());
 
         if (t.isApproved()) {
+            // Update so rules don't get run repeatedly
+            t.setProcessed(true);
+            drools.kieSession.update(tFactHandle, t);
+
             //  First, get the classes we need
             OntClass classTransaction = ontReasoned.getOntClass(NS + "Transaction");
 
@@ -217,7 +244,6 @@ public class HomeController extends Controller {
             Individual receiver = ontReasoned.getIndividual(NS + receiverID);
 
             // Update bank
-            Bank b = banks.get(t.getBankID());
             b.setTotalApproved(b.getTotalApproved() + 1);
             b.setAvgAmount((b.getAvgAmount() + t.getAmount()) / b.getTotalApproved());
             if (sender.hasOntClass(NS + "Trusted") || receiver.hasOntClass(NS + "Trusted")) {
@@ -225,10 +251,6 @@ public class HomeController extends Controller {
             }
             b.setConsecutiveRejections(0);
             System.out.println(b);
-
-            // Update the bank instance in drools
-            FactHandle bFactHandle = drools.kieSession.getFactHandle(b);
-            drools.kieSession.update(bFactHandle, b);
 
             // Create the individuals we need
             Individual transaction = ontReasoned.createIndividual(NS + transactionRequestID, classTransaction);
@@ -239,7 +261,40 @@ public class HomeController extends Controller {
 
             // Print ontology
             printOntology();
+
+            // Log approval to file
+            String logEntry = "Transaction ID - " + t.getId() +
+                    ", Bank ID - " + t.getBankID() +
+                    ", Sender ID - " + t.getSenderID() +
+                    ", Receiver ID - " + t.getReceiverID() +
+                    ", Amount - " + t.getAmount() +
+                    ", Category - " + t.getCategory() +
+                    ", Timestamp - " + t.getTimestamp();
+            try {
+                appendToLog("approved", logEntry);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Log rejection to file
+            String logEntry = "Transaction ID - " + t.getId() +
+                    ", Bank ID - " + t.getBankID() +
+                    ", Sender ID - " + t.getSenderID() +
+                    ", Receiver ID - " + t.getReceiverID() +
+                    ", Amount - " + t.getAmount() +
+                    ", Category - " + t.getCategory() +
+                    ", Timestamp - " + t.getTimestamp() +
+                    ", Rule Broken - " + t.getBrokenRule();
+            try {
+                appendToLog("rejected", logEntry);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        // Update the bank instance in drools
+        FactHandle bFactHandle = drools.kieSession.getFactHandle(b);
+        drools.kieSession.update(bFactHandle, b);
 
         // Return appropriate JSON response
         ObjectNode result = Json.newObject();
@@ -455,7 +510,16 @@ public class HomeController extends Controller {
         transactionRequests.clear();
 
         // Purge droolsSession
-        drools.kieSession.dispose();
+        for (FactHandle h : drools.kieSession.getFactHandles()) {
+            drools.kieSession.retract(h);
+        }
+
+        // Purge log files
+        try {
+            createLogs();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Print ontology
         printOntology();

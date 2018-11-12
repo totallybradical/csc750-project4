@@ -1,5 +1,8 @@
 package models;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TransactionRequest {
 
     private String id;
@@ -10,6 +13,8 @@ public class TransactionRequest {
     private String bankID;
     private String category;
     private int amount;
+    private String timestamp;
+    private String brokenRule;
 
     // senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String
     public TransactionRequest(String senderID, String receiverID, String bankID, String category, int amount, String id) {
@@ -21,6 +26,7 @@ public class TransactionRequest {
         this.bankID = bankID;
         this.category = category;
         this.amount = amount;
+        this.timestamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
     }
 
     @Override
@@ -67,5 +73,17 @@ public class TransactionRequest {
 
     public int getAmount() {
         return this.amount;
+    }
+
+    public String getTimestamp() {
+        return this.timestamp;
+    }
+
+    public String getBrokenRule() {
+        return this.brokenRule;
+    }
+
+    public void setBrokenRule(String brokenRule) {
+        this.brokenRule = brokenRule;
     }
 }

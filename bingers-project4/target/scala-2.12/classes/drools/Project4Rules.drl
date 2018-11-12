@@ -14,13 +14,15 @@ activation-group "Transaction validation"
 no-loop true
 when
     $b : Bank($b.isBlacklisted() == true)
-    $t : TransactionRequest($t.isApproved() == true && $t.getBankID() == $b.getId())
+    $t : TransactionRequest($t.isProcessed() == false && $t.getBankID() == $b.getId())
 then
     System.out.println("Transaction " + $t.getId() + " breaks rule 1 - rejected");
+    $t.setBrokenRule("1");
     $b.setConsecutiveRejections($b.getConsecutiveRejections() + 1);
     $b.setTotalRejections($b.getTotalRejections() + 1);
     System.out.println("Bank " + $b.getId() + " has " + $b.getConsecutiveRejections() + " consecutive rejections (" + $b.getTotalRejections() + " total)");
     $t.setApproved(false);
+    $t.setProcessed(true);
     update( $t );
 end
 
@@ -32,9 +34,11 @@ salience -2
 activation-group "Transaction validation"
 no-loop true
 when
-    $t : TransactionRequest($t.isApproved() == true && $t.getCategory() == "Medical")
+    $t : TransactionRequest($t.isProcessed() == false && $t.getCategory() == "Medical")
 then
     System.out.println("Transaction " + $t.getId() + " meets rule 2 - approved");
+    $t.setProcessed(true);
+    update( $t );
 end
 
 // A transaction request with category “Weapons” requires that (necessary, but not
@@ -49,7 +53,7 @@ salience -3
 activation-group "Transaction validation"
 no-loop true
 when
-    $t : TransactionRequest($t.isApproved() == true && $t.getCategory() == "Weapons")
+    $t : TransactionRequest($t.isProcessed() == false && $t.getCategory() == "Weapons")
     $b : Bank($b.getId() == $t.getBankID())
     (
     $sender : Individual($sender.getLocalName() == $t.getSenderID() && !$sender.hasOntClass(NS + "Trusted"))
@@ -58,10 +62,12 @@ when
     )
 then
     System.out.println("Transaction " + $t.getId() + " breaks rule 3a - rejected");
+    $t.setBrokenRule("3a");
     $b.setConsecutiveRejections($b.getConsecutiveRejections() + 1);
     $b.setTotalRejections($b.getTotalRejections() + 1);
     System.out.println("Bank " + $b.getId() + " has " + $b.getConsecutiveRejections() + " consecutive rejections (" + $b.getTotalRejections() + " total)");
     $t.setApproved(false);
+    $t.setProcessed(true);
     update( $t );
 end
 
@@ -78,13 +84,15 @@ activation-group "Transaction validation"
 no-loop true
 when
     $b : Bank($b.getNationality() != "local")
-    $t : TransactionRequest($t.isApproved() == true && $t.getCategory() == "Weapons" && $t.getBankID() == $b.getId())
+    $t : TransactionRequest($t.isProcessed() == false && $t.getCategory() == "Weapons" && $t.getBankID() == $b.getId())
 then
     System.out.println("Transaction " + $t.getId() + " breaks rule 3b - rejected");
+    $t.setBrokenRule("3b");
     $b.setConsecutiveRejections($b.getConsecutiveRejections() + 1);
     $b.setTotalRejections($b.getTotalRejections() + 1);
     System.out.println("Bank " + $b.getId() + " has " + $b.getConsecutiveRejections() + " consecutive rejections (" + $b.getTotalRejections() + " total)");
     $t.setApproved(false);
+    $t.setProcessed(true);
     update( $t );
 end
 
@@ -95,16 +103,18 @@ salience -4
 activation-group "Transaction validation"
 no-loop true
 when
-    $t : TransactionRequest($t.isApproved() == true && $t.getAmount() > 100000)
+    $t : TransactionRequest($t.isProcessed() == false && $t.getAmount() > 100000)
     $b : Bank($b.getId() == $t.getBankID())
     $sender : Individual($sender.getLocalName() == $t.getSenderID() && !$sender.hasOntClass(NS + "Trusted"))
     $receiver : Individual($receiver.getLocalName() == $t.getReceiverID() && !$receiver.hasOntClass(NS + "Trusted"))
 then
     System.out.println("Transaction " + $t.getId() + " breaks rule 4 - rejected");
+    $t.setBrokenRule("4");
     $b.setConsecutiveRejections($b.getConsecutiveRejections() + 1);
     $b.setTotalRejections($b.getTotalRejections() + 1);
     System.out.println("Bank " + $b.getId() + " has " + $b.getConsecutiveRejections() + " consecutive rejections (" + $b.getTotalRejections() + " total)");
     $t.setApproved(false);
+    $t.setProcessed(true);
     update( $t );
 end
 
@@ -117,13 +127,15 @@ activation-group "Transaction validation"
 no-loop true
 when
     $b : Bank($b.getTotalApproved() > 0)
-    $t : TransactionRequest($t.isApproved() == true && $t.getBankID() == $b.getId() && ($t.getAmount() > ($b.getAvgAmount() * 10)))
+    $t : TransactionRequest($t.isProcessed() == false && $t.getBankID() == $b.getId() && ($t.getAmount() > ($b.getAvgAmount() * 10)))
 then
     System.out.println("Transaction " + $t.getId() + " breaks rule 5 - rejected");
+    $t.setBrokenRule("5");
     $b.setConsecutiveRejections($b.getConsecutiveRejections() + 1);
     $b.setTotalRejections($b.getTotalRejections() + 1);
     System.out.println("Bank " + $b.getId() + " has " + $b.getConsecutiveRejections() + " consecutive rejections (" + $b.getTotalRejections() + " total)");
     $t.setApproved(false);
+    $t.setProcessed(true);
     update( $t );
 end
 
@@ -137,15 +149,17 @@ activation-group "Transaction validation"
 no-loop true
 when
     $b : Bank(($b.getTotalTrusted() / (double)$b.getTotalApproved()) < 0.25)
-    $t : TransactionRequest($t.isApproved() == true && $t.getBankID() == $b.getId())
+    $t : TransactionRequest($t.isProcessed() == false && $t.getBankID() == $b.getId())
     $sender : Individual($sender.getLocalName() == $t.getSenderID() && !$sender.hasOntClass(NS + "Trusted"))
     $receiver : Individual($receiver.getLocalName() == $t.getReceiverID() && !$receiver.hasOntClass(NS + "Trusted"))
 then
     System.out.println("Transaction " + $t.getId() + " breaks rule 6 - rejected");
+    $t.setBrokenRule("6");
     $b.setConsecutiveRejections($b.getConsecutiveRejections() + 1);
     $b.setTotalRejections($b.getTotalRejections() + 1);
     System.out.println("Bank " + $b.getId() + " has " + $b.getConsecutiveRejections() + " consecutive rejections (" + $b.getTotalRejections() + " total)");
     $t.setApproved(false);
+    $t.setProcessed(true);
     update( $t );
 end
 
@@ -161,4 +175,5 @@ when
 then
     System.out.println("Bank " + $b.getId() + " has reached " + $b.getConsecutiveRejections() + " consecutive rejections - blacklisted");
     $b.setBlacklisted(true);
+    update ( $b );
 end
