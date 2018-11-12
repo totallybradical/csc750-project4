@@ -3,6 +3,7 @@ package models;
 public class TransactionRequest {
 
     private String id;
+    private boolean isProcessed;
     private boolean isApproved;
     private String senderID;
     private String receiverID;
@@ -13,6 +14,7 @@ public class TransactionRequest {
     // senderID: String, receiverID: String, bankID: String, category: String, amount: int, transactionRequestID: String
     public TransactionRequest(String senderID, String receiverID, String bankID, String category, int amount, String id) {
         this.id = id;
+        this.isProcessed = false;
         this.isApproved = true; // Assume approved unless rejected by a rule
         this.senderID = senderID;
         this.receiverID = receiverID;
@@ -29,6 +31,14 @@ public class TransactionRequest {
 
     public String getId() {
         return this.id;
+    }
+
+    public boolean isProcessed() {
+        return this.isProcessed;
+    }
+
+    public void setProcessed(boolean isProcessed) {
+        this.isProcessed = isProcessed;
     }
 
     public boolean isApproved() {

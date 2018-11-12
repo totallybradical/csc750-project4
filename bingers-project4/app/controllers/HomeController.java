@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import models.Bank;
 import models.TransactionRequest;
 import org.apache.jena.util.iterator.ExtendedIterator;
+import org.kie.api.runtime.rule.FactHandle;
 import play.data.FormFactory;
 import play.libs.Json;
 import play.mvc.*;
@@ -114,6 +115,8 @@ public class HomeController extends Controller {
         // Create the individuals we need
         Individual merchant = ontReasoned.createIndividual(NS + uniqueID, classMerchant);
 
+        drools.kieSession.insert(merchant);
+
         // Print ontology
         printOntology();
 
@@ -130,6 +133,8 @@ public class HomeController extends Controller {
 
         // Create the individuals we need
         Individual consumer = ontReasoned.createIndividual(NS + uniqueID, classConsumer);
+
+        drools.kieSession.insert(consumer);
 
         // Print ontology
         printOntology();
@@ -191,11 +196,13 @@ public class HomeController extends Controller {
         TransactionRequest t = new TransactionRequest(senderID, receiverID, bankID, category, amount, transactionRequestID);
         transactionRequests.put(transactionRequestID, t);
 
-        drools.kieSession.insert(t);
+        FactHandle tFactHandle = drools.kieSession.insert(t);
         drools.kieSession.fireAllRules();
 
         System.out.println("Transaction Requests: " + transactionRequests);
         System.out.println();
+
+        drools.kieSession.update(tFactHandle, t);
 
         if (t.isApproved()) {
             //  First, get the classes we need
@@ -208,6 +215,20 @@ public class HomeController extends Controller {
             // Get existing individuals
             Individual sender = ontReasoned.getIndividual( NS + senderID);
             Individual receiver = ontReasoned.getIndividual(NS + receiverID);
+
+            // Update bank
+            Bank b = banks.get(t.getBankID());
+            b.setTotalApproved(b.getTotalApproved() + 1);
+            b.setAvgAmount((b.getAvgAmount() + t.getAmount()) / b.getTotalApproved());
+            if (sender.hasOntClass(NS + "Trusted") || receiver.hasOntClass(NS + "Trusted")) {
+                b.setTotalTrusted(b.getTotalTrusted() + 1);
+            }
+            b.setConsecutiveRejections(0);
+            System.out.println(b);
+
+            // Update the bank instance in drools
+            FactHandle bFactHandle = drools.kieSession.getFactHandle(b);
+            drools.kieSession.update(bFactHandle, b);
 
             // Create the individuals we need
             Individual transaction = ontReasoned.createIndividual(NS + transactionRequestID, classTransaction);
@@ -406,7 +427,7 @@ public class HomeController extends Controller {
 
         if (isBank) {
             // Get number of rejections
-            int numOfRejections = banks.get(bankID).getNumOfRejections();
+            int numOfRejections = banks.get(bankID).getTotalRejections();
 
             // Return appropriate JSON response
             ObjectNode result = Json.newObject();

@@ -1,8 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:146:1: package drools does not exist[0m
-[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.insert(b);[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:192:1: package drools does not exist[0m
-[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.insert(t);[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:193:1: package drools does not exist[0m
-[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.fireAllRules();[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:435:1: package drools does not exist[0m
-[0m[[0m[31merror[0m] [0m[0m        drools.kieSession.dispose();[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/bingerso/GitHub-Projects/csc750-project4/bingers-project4/app/controllers/HomeController.java:413:1: cannot find symbol[0m
+[0m[[0m[31merror[0m] [0m[0m  symbol:   method getNumOfRejections()[0m
+[0m[[0m[31merror[0m] [0m[0m  location: class models.Bank[0m
+[0m[[0m[31merror[0m] [0m[0m            int numOfRejections = banks.get(bankID).getNumOfRejections();[0m
